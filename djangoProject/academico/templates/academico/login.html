@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>notas</title>
+    <link rel="stylesheet" href="/static/academico/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="/static/academico/css/untitled.css">
+    <link rel="stylesheet" href="/static/academico/css/vanilla-zoom.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary clean-navbar">
+        <div class="container"><a class="navbar-brand logo" href="#"><img src="{% static 'academico/img/avatars/central.png' %}" width="50px"></a></div>
+    </nav>
+
+    <div class="container"></div>
+    <div class="container-fluid form" style="top:100px">
+    <div class="container ">
+        <div class="row " style="margin-top:220px">
+            <div class="col-lg-3 col-md-0 col-0">
+                
+            </div>
+                <div class="col-lg-4 col-md-12 col-12 bg-primary p-4" >
+                    <form action="" method="post" >
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label for="" style="color:beige">Usuario</label>
+                          <input type="text" name="username" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                        </div>
+                    </br>
+                        <div class="form-group">
+                            <label for="" style="color:beige">Contraseña</label>
+                            <input type="password" name="password" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                          </div>
+                        </br>
+                          <div class="form-group buton">
+                            <input type="submit" name="" id="" class="form-control bot" placeholder="Ingresar" value="Ingresar">
+                          </div>
+                    </form>
+                </div>
+                
+                <div class="col-lg-3 col-md-0 col-0">
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="assets/js/vanilla-zoom.js"></script>
+    <script src="assets/js/theme.js"></script>
+</body>
+
+</html>

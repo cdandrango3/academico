@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="../../static/academico/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="../../static/academico/css/untitled.css">
+    <link rel="stylesheet" href="../../static/academico/css/vanilla-zoom.min.css">
+    {% endblock stylesheets %}
+
+</head>
+<body>
+{% block header %}
+<nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary clean-navbar">
+        <div class="container"><a class="navbar-brand logo" href="#"><img src="{% static 'academico/img/avatars/central.png' %}" width="50px"></a></div>
+    </nav>
+{% endblock header %}
+</body>
+</html>

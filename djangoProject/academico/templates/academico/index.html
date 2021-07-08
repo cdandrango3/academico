@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - Brand</title>
+    <link rel="stylesheet" href="../../static/academico/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="../../static/academico/css/untitled.css">
+    <link rel="stylesheet" href="../../static/academico/css/vanilla-zoom.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand navbar-expand-lg fixed-top bg-white clean-navbar">
+        <div class="container"><a class="navbar-brand logo" href="#">Brand</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary clean-navbar">
+                    <div class="container"><a class="navbar-brand logo" href="#"><img src="../../static/academico/img/avatars/central.png" width="40px"></img></a><button class="btn btn-primary loginb" type="button" onclick="window.location.href='/login'">Login</button></div>
+                </nav>
+                <ul class="navbar-nav ms-auto"></ul>
+            </div>
+        </div>
+    </nav>
+    <main class="page landing-page">
+        <section class="clean-block clean-hero" style="color:rgba(9, 162, 255, 0.85); background-image: url({% static 'academico/img/tech/image4.jpg' %})">
+            <div class="text">
+                <h2>Universidad Central Del Ecuador.</h2>
+                <p>Sistema de Notas.</p><button class="btn btn-outline-light btn-lg" type="button">Ingresar</button>
+            </div>
+        </section>
+    </main>
+    <footer class="page-footer dark">
+        <div class="footer-copyright">
+            <p>© 2021 Copyright Text</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="../../static/academico/js/vanilla-zoom.js"></script>
+    <script src="../../static/academico/js/theme.js"></script>
+</body>
+
+</html>

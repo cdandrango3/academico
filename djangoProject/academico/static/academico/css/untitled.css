@@ -1,0 +1,26 @@
+.navbar-dark .navbar-brand {
+  color: #fff;
+}
+
+.logo {
+}
+
+.loginb {
+  font-size: 20px;
+  background: var(--bs-info);
+}
+
+
+.form {
+  margin-top: 150px;
+}
+
+.buton .bot {
+}
+
+.buton .bot:hover {
+  background: var(--bs-cyan);
+  border: none;
+  color: white;
+}
+
