@@ -1,0 +1,3 @@
+Migrations for 'clase':
+  djangoProject\clase\migrations\0003_users_telefono.py
+    - Add field telefono to users

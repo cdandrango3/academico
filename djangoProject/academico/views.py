@@ -16,12 +16,18 @@ def login(request):
         if user is None:
             return HttpResponse("not exits")
         else:
-            return redirect('/profesores')
+            if user.groups.filter(name='profesor'):
+                return HttpResponse("es profesor")
+            if user.groups.filter(name='estudiante'):
+                return HttpResponse("es estudiante")
+
+
+            return redirect("/profesores")
 
         return HttpResponse(username)
     return render(request, "academico/login.html")
 def allprofe(request):
     return render(request, "academico/profeall.html", {"profe": profesores.objects.all()})
+
 def about(request):
     return HttpResponse("about ")
-
