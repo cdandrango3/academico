@@ -2,9 +2,12 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse
 from djangoProject.clase.models import profesores
 from django.contrib.auth import authenticate
+from django.contrib.auth import login as lg
+from django.contrib.auth import logout as cerrar
 def c(request):
      return render(request,"academico/index.html")
 def login(request):
+    # Se ubica el request con el metodo Post
     if request.method== 'POST':
         username=request.POST['username']
         password=request.POST['password']
@@ -16,18 +19,20 @@ def login(request):
         if user is None:
             return HttpResponse("not exits")
         else:
-            if user.groups.filter(name='profesor'):
-                return HttpResponse("es profesor")
-            if user.groups.filter(name='estudiante'):
-                return HttpResponse("es estudiante")
 
 
-            return redirect("/profesores")
+          lg(request,user)
+          return redirect("/profesores")
 
         return HttpResponse(username)
     return render(request, "academico/login.html")
+
 def allprofe(request):
-    return render(request, "academico/profeall.html", {"profe": profesores.objects.all()})
+    return render(request, "academico/profeall.html", {"authe":"perro"})
 
 def about(request):
     return HttpResponse("about ")
+def logout(request):
+    cerrar(request)
+    return redirect('/')
+

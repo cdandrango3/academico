@@ -21,6 +21,8 @@ class Users(AbstractUser):
     isTeacher=models.BooleanField(default="False")
     isStudent = models.BooleanField(default="False")
     telefono = models.BooleanField(default="False")
+    def is_student(self):
+        return self.groups.filter(name='estudiante').exists()
     class Meta:
         db_table = 'auth_user'
 class TeacherProfile(models.Model):

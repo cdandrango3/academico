@@ -9,7 +9,13 @@
 </head>
 <body>
 {% include 'header.html' %}
+
 <br><br><br><br><br>
-<h1>Bienvenidos</h1>
+{% if request.user.groups.all.0.name == 'estudiante' %}
+<p>eres estudiante</p>
+{% endif %}
+{% if request.user.groups.all.0.name == 'profesor' %}
+<p>eres profesor</p>
+{% endif %}
 </body>
 </html>
