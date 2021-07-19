@@ -1,4 +1,3 @@
-from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -17,3 +16,6 @@ class materia(models.Model):
     id = models.PositiveBigIntegerField(primary_key=True)
     nombre_materia = models.CharField(max_length=200)
     docentes=models.ManyToManyField(profesores)
+
+class Users(AbstractUser):
+       pass

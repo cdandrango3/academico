@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+AUTH_USER_MODEL = 'clase.Users'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
