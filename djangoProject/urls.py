@@ -19,6 +19,7 @@ from django.urls import path
 from djangoProject.academico.views import c
 from djangoProject.academico.views import login
 from djangoProject.academico.views import logout
+from djangoProject.academico.views import perfil
 #from django.contrib.auth import login
 from djangoProject.academico.views import allprofe
 
@@ -27,6 +28,7 @@ urlpatterns = [
     path('',c),
     path('login/',login),
     path('profesores',allprofe),
-    path('logout/',logout)
+    path('logout/',logout),
+    path('perfil/',perfil)
     #path('login/',login,{'template_name':'login.html'}, name='login'),
 ]

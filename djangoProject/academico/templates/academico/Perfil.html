@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../static/academico/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="../../static/academico/css/untitled.css">
+    <link rel="stylesheet" href="../../static/academico/css/vanilla-zoom.min.css">
+    <title>Perfil</title>
+</head>
+<body>
+{% if user.is_authenticated %}
+{% include 'header.html' %}
+<br><br><br><br><br>
+    <div class="card text-left p-5 m-5" >
+    {% for perfil in name%}
+        {% if request.user.groups.all.0.name == 'estudiante' %}
+        <img class="card-img-top img-fluid mx-auto" src={% static 'academico/img/icono1.png' %} alt="" style="width:60px; height:60px">
+       {% endif %}
+        {% if request.user.groups.all.0.name == 'profesor' %}
+        <img class="card-img-top img-fluid mx-auto" src={% static 'academico/img/icono 2.png' %} alt="" style="width:60px; height:60px">
+       {% endif %}
+        <div class="card-head">
+         <h4 class="card-title">Perfil</h4>
+        </div>
+        <div class="card-body">
+            <p class="card-text">Tipo de Usuario: {{ request.user.groups.all.0.name }}</p>
+            <p class="card-text">Nombre:  {{ perfil.nombre }}</p>
+            <p class="card-text">Apellido: {{perfil.apellido}}</p>
+            <p class="card-text">Edad: {{perfil.edad}}</p>
+            <p class="card-text">Telefono: {{perfil.Telefono}}</p>
+
+
+        </div>
+    {% endfor %}
+    </div>
+    </body>
+    {% else %}
+    <div class="alert alert-primary  fade show" role="alert">
+
+        no puedes acceder a este recurso
+    </div>
+{% endif %}
+
+</html>

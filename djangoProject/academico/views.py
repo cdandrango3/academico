@@ -4,6 +4,8 @@ from djangoProject.clase.models import profesores
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as lg
 from django.contrib.auth import logout as cerrar
+from djangoProject.clase.models import estudiante
+from django.contrib.auth.models import Group
 def c(request):
      return render(request,"academico/index.html")
 def login(request):
@@ -21,6 +23,7 @@ def login(request):
         else:
 
 
+
           lg(request,user)
           return redirect("/profesores")
 
@@ -28,11 +31,27 @@ def login(request):
     return render(request, "academico/login.html")
 
 def allprofe(request):
-    return render(request, "academico/profeall.html", {"authe":"perro"})
+    d=estudiante.objects.filter(user__username__contains=request.user.username)
+    perfil = [perf for perf in d.values()]
+    return render(request, "academico/profeall.html", {"authe":"perro","name":perfil})
 
 def about(request):
     return HttpResponse("about ")
 def logout(request):
     cerrar(request)
     return redirect('/')
+def perfil(request):
+    userGroup = Group.objects.get(user=request.user).name
+    print(userGroup)
+    if userGroup == 'estudiante':
+        d = estudiante.objects.filter(user__username__contains=request.user.username)
+        perfil = [perf for perf in d.values()]
+    elif userGroup == 'profesor':
+        d = profesores.objects.filter(user__username__contains=request.user.username)
+        perfil = [perf for perf in d.values()]
+    else:
+        perfil="no existe"
+    return render(request, "academico/Perfil.html", {"authe": "profesor", "name": perfil})
+
+
 
