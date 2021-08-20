@@ -20,6 +20,8 @@ from djangoProject.academico.views import c
 from djangoProject.academico.views import login
 from djangoProject.academico.views import logout
 from djangoProject.academico.views import perfil
+from djangoProject.academico.views import elegir_curso
+from djangoProject.academico.views import editar_curso
 #from django.contrib.auth import login
 from djangoProject.academico.views import allprofe
 
@@ -29,6 +31,8 @@ urlpatterns = [
     path('login/',login),
     path('profesores',allprofe),
     path('logout/',logout),
-    path('perfil/',perfil)
+    path('perfil/',perfil),
+    path('curso/',elegir_curso),
+    path('editar/<str:materias>',editar_curso,name="editar")
     #path('login/',login,{'template_name':'login.html'}, name='login'),
 ]

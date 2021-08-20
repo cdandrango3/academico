@@ -24,8 +24,8 @@
        {% endif %}
         <div class="card-head">
          <h4 class="card-title">Perfil</h4>
-        </div>
-        <div class="card-body">
+        </div >
+        <div class="card-body pb-5">
             <p class="card-text">Tipo de Usuario: {{ request.user.groups.all.0.name }}</p>
             <p class="card-text">Nombre:  {{ perfil.nombre }}</p>
             <p class="card-text">Apellido: {{perfil.apellido}}</p>

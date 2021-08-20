@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>editar alumnos</title>
+
+</head>
+<body>
+{% include 'header.html' %}
+<br><br><br><br><br>
+<div class="container">
+<table class="table table-striped table-inverse table-responsive">
+    <thead class="thead-inverse">
+    <tr>
+        <th>Cedula</th>
+        <th>Nombres</th>
+        <th>Apellidos</th>
+        <th>Nota</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for alumno in alumnos %}
+    <tr>
+        <td>{{alumno.id }}</td>
+        <td>{{alumno.nombre  }}</td>
+        <td>{{ alumno.apellido }}</td>
+       <td><a href="">Editar</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+</body>
+</html>
