@@ -24,7 +24,7 @@
         <td>{{alumno.id }}</td>
         <td>{{alumno.nombre  }}</td>
         <td>{{ alumno.apellido }}</td>
-       <td><a href="">Editar</a></td>
+       <td><a href="{% url 'notas' materia alumno.id %}">Editar</a></td>
     </tr>
     {% endfor %}
     </tbody>
