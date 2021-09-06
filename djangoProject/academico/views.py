@@ -87,11 +87,47 @@ def editar_curso(request,materias):
           return redirect("/profesores")
       elif userGroup == 'profesor':
 
+
          materi=materia.objects.get(id=materias)
          codigo_curso=materi.curso_materia.Curso_codigo
          alumnos = estudiante.objects.filter(curso_id__Curso_codigo=codigo_curso)
+
          list_alumnos = [listas for listas in alumnos.values()]
-         return render(request,"academico/editar_alumnos.html",{"alumnos":list_alumnos,"materia":materi.id})
+         existe=[]
+
+         for listas in list_alumnos:
+             estudiantes=listas['id']
+             criterio1 = Q(alumno=estudiantes)
+             criterio2 = Q(materia=materi)
+             c = calificacion.objects.filter(criterio1 & criterio2).exists()
+             listas['status']=c
+             existe.append(listas)
+         if request.method == 'POST':
+             search = request.POST['search']
+             n= request.POST.get('ca',False)
+             k = request.POST.get('ca2', False)
+             print(n,k)
+
+             materi = materia.objects.get(id=materias)
+             codigo_curso = materi.curso_materia.Curso_codigo
+             criterio1 = Q(curso_id__Curso_codigo=codigo_curso)
+             criterio2 = Q(nombre__contains=search)
+             alumnos = estudiante.objects.filter(criterio1 & criterio2)
+             list_alumnos = [listas for listas in alumnos.values()]
+             existe=[]
+             for listas in list_alumnos:
+                 estudiantes = listas['id']
+                 criterio1 = Q(alumno=estudiantes)
+                 criterio2 = Q(materia=materi)
+                 c = calificacion.objects.filter(criterio1 & criterio2).exists()
+                 listas['status'] = c
+                 existe.append(listas)
+             print(existe)
+
+
+
+
+         return render(request,"academico/editar_alumnos.html",{"alumnos":existe,"materia":materi.id})
 
 def notas(request,materias,alum):
     print(materias)

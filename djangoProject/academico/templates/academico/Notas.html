@@ -8,8 +8,10 @@
 {% include 'header.html' %}
 <br><br><br><br><br>
 <div class="container">
-
-    <form method="post">
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-4">
+    <form class="bg-info p-3 pb-0" method="post">
         {% csrf_token %}
 <div class="form-group ">
 
@@ -18,9 +20,13 @@
 
 <br>
     <div class="form-group">
-    <input type="submit" placeholder="Submit" class="btn btn-warning">
-</div>
+      <input type="submit" placeholder="editar" class="btn btn-dark btn-block" value="Editar">
+        </div>
 </form>
+
+
+    <div class="col-4"></div>
+    </div>
 </div>
 </body>
 </html>

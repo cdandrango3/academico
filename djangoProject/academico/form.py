@@ -12,6 +12,7 @@ class Nota(ModelForm):
                 attrs = {
                 'class':'m-4',
                 'placeholder': 'ingrese la nota'
+
         }
         )
         }
