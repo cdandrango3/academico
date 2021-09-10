@@ -228,9 +228,17 @@ def promedio_general(request,materias):
     periodos = periodo.objects.get(is_active=True)
     criterio2 = Q(materia=materi)
     criterio3 = Q(periodo=periodos)
+    promedio=[]
+    datos={}
     for alumno in alumnos:
         criterio1 = Q(alumno=alumno)
-        c = calificacion.objects.get(criterio1 & criterio2 & criterio3)
-        print(c.nota)
+        h=calificacion.objects.filter(criterio1 & criterio2 & criterio3).exists()
+        if h:
+            c = calificacion.objects.get(criterio1 & criterio2 & criterio3)
+            promedio.append(c.nota)
+        else:
+            pass
+    print(promedio)
+
 
     return render(request, "academico/ver_alumno.html")
