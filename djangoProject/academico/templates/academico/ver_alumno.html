@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver alumno</title>
+
+</head>
+<body>
+{% include 'header.html' %}
+<section class="slider">
+    {% if existe %}
+
+                <table >
+                      <th scope="col">ID</th>
+                            <th class="ta" scope="col">NOMBRES</th>
+                            <th class="ta" scope="col">APELLIDOS</th>
+                            <th scope="col" class="text-center" colspan="3">NOTA</th>
+                        </tr>
+
+                            <tr>
+
+                            <td>{{info.id }}</td>
+                            <td>{{info.nombre  }}</td>
+                            <td>{{info.apellido  }}</td>
+                            <td>{{ info.nota }}</td>
+
+                        </tr>
+
+                </table>
+                <table >
+                            <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Promedio General</td>
+                            <td>20</td>
+                        </tr>
+                </table>
+    {% else %}
+        <
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+
+            <h1>No existe nota todavia en el registro</h1>
+        </div>
+
+        <script>
+            $(".alert").alert();
+        </script>
+    {% endif %}
+</section>
+</body>
+</html>

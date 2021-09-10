@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as lg
 from django.contrib.auth import logout as cerrar
 from djangoProject.clase.models import estudiante
-from djangoProject.clase.models import materia,curso
+from djangoProject.clase.models import materia,curso,periodo
 from djangoProject.clase.models import notas as calificacion
 from django.contrib.auth.models import Group
 from django.db.models import Q
@@ -104,14 +104,17 @@ def editar_curso(request,materias):
              existe.append(listas)
          if request.method == 'POST':
              search = request.POST['search']
-             n= request.POST.get('ca',False)
-             k = request.POST.get('ca2', False)
-             print(n,k)
+             nom= request.POST.get('ca')
+             print(nom)
+
+             if nom!=False:
+                 criterio2 = Q(id__contains=search)
+             else:
+                 criterio2 = Q(nombre__contains=search)
 
              materi = materia.objects.get(id=materias)
              codigo_curso = materi.curso_materia.Curso_codigo
              criterio1 = Q(curso_id__Curso_codigo=codigo_curso)
-             criterio2 = Q(nombre__contains=search)
              alumnos = estudiante.objects.filter(criterio1 & criterio2)
              list_alumnos = [listas for listas in alumnos.values()]
              existe=[]
@@ -122,7 +125,7 @@ def editar_curso(request,materias):
                  c = calificacion.objects.filter(criterio1 & criterio2).exists()
                  listas['status'] = c
                  existe.append(listas)
-             print(existe)
+
 
 
 
@@ -140,6 +143,8 @@ def notas(request,materias,alum):
         elif userGroup == 'profesor':
             estudiantes = estudiante.objects.get(id=alum)
             materi = materia.objects.get(id=materias)
+
+
             criterio1=Q(alumno=estudiantes)
             criterio2 = Q(materia=materi)
             c=calificacion.objects.filter(criterio1 & criterio2).exists()
@@ -163,6 +168,7 @@ def notas(request,materias,alum):
 
                     else:
                         # obtiene todos los datos
+                        periodos = periodo.objects.get(is_active=True)
                         materi = materia.objects.get(id=materias)
                         codigo= materi.curso_materia.Curso_codigo
                         cursos=curso.objects.get(Curso_codigo=codigo)
@@ -170,7 +176,7 @@ def notas(request,materias,alum):
                         estudiantes=estudiante.objects.get(id=alum)
                         print(estudiante)
                         # se pone el modelo
-                        califi=calificacion(nota=nota,alumno=estudiantes,profesor=profesor,materia=materi,curso=cursos)
+                        califi=calificacion(nota=nota,alumno=estudiantes,profesor=profesor,materia=materi,curso=cursos,periodo=periodos)
                         califi.save()
 
                         print(nota)
@@ -183,5 +189,36 @@ def notas(request,materias,alum):
 
     return render(request,"academico/Notas.html",{"form":form})
 def thank(request):
-    return render(request,"academico/thank.html")
+
+    return render(request,"academico/thank.html", {"metodo":request.GET.get('metodo')})
+
+def eliminar(request,materias,alum):
+    estudiantes = estudiante.objects.get(id=alum)
+    materi = materia.objects.get(id=materias)
+    criterio1 = Q(alumno=estudiantes)
+    criterio2 = Q(materia=materi)
+    c = calificacion.objects.filter(criterio1 & criterio2).exists()
+    if c:
+        calificacion.objects.filter(criterio1 & criterio2).delete()
+        return redirect('/thank/?metodo=eliminar')
+
+    return HttpResponse("eliminar")
+def ver(request,materias,alum):
+    estudiantes = estudiante.objects.get(id=alum)
+    materi = materia.objects.get(id=materias)
+    periodos = periodo.objects.get(is_active=True)
+    criterio1 = Q(alumno=estudiantes)
+    criterio2 = Q(materia=materi)
+    criterio3 =  Q(periodo=periodos)
+    c = calificacion.objects.filter(criterio1 & criterio2 & criterio3).exists()
+    print(c)
+    if c:
+        notas=calificacion.objects.get(criterio1 & criterio2 & criterio3)
+        exits=True
+        dato={"id":estudiantes.id,"nombre":estudiantes.nombre,"apellido":estudiantes.apellido,"nota":notas.nota}
+        print(dato)
+    else:
+        dato={}
+        exits=False
+    return render(request,"academico/ver_alumno.html",{"info":dato,"existe":exits})
 

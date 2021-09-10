@@ -8,12 +8,20 @@
 {% include 'header.html' %}
 <br><br><br><br><br>
 
-   <div class="container">
+
+{% if metodo == "eliminar" %}
+
+    <div class="container">
+       <div class="alert alert-danger" role="alert">
+       Se ha eliminado correctamente
+   </div>
+
+{% else %}
+        <div class="container">
        <div class="alert alert-success" role="alert">
        Se ha editado correctamente
    </div>
-
-
+        {% endif %}
 </div>
 </body>
 </html>

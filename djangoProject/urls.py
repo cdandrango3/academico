@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
-from djangoProject.academico.views import c, notas,thank
+from djangoProject.academico.views import c, notas,thank,eliminar,ver
 from djangoProject.academico.views import login
 from djangoProject.academico.views import logout
 from djangoProject.academico.views import perfil
@@ -34,6 +34,8 @@ urlpatterns = [
     path('curso/',elegir_curso),
     path('editar/<str:materias>',editar_curso,name="editar"),
     path('notas/<str:materias>/<int:alum>',notas,name="notas"),
+    path('eliminar/<str:materias>/<int:alum>',eliminar,name="eliminar"),
+    path('ver/<str:materias>/<int:alum>',ver,name="ver"),
     path('thank/',thank)
     #path('login/',login,{'template_name':'login.html'}, name='login'),
 ]

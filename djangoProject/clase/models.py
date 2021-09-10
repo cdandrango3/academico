@@ -28,6 +28,7 @@ class materia(models.Model):
     curso_materia = models.ForeignKey('curso',on_delete=models.CASCADE,default="no hay")
     id_profesor = models.ManyToManyField('profesores')
 class periodo(models.Model):
+    periodoid=models.CharField(primary_key=True,max_length=200,default="PRI1Q")
     nombre_periodo=models.CharField(max_length=200)
     is_active=models.BooleanField(default=False)
 class notas(models.Model):
@@ -36,6 +37,7 @@ class notas(models.Model):
     profesor = models.ForeignKey('profesores', on_delete=models.CASCADE)
     materia= models.ForeignKey('materia', on_delete=models.CASCADE)
     curso = models.ForeignKey('curso', on_delete=models.CASCADE)
+    periodo=models.ForeignKey('periodo', on_delete=models.CASCADE,blank=True,null=True)
 
 class Users(AbstractUser):
     isTeacher=models.BooleanField(default="False")
