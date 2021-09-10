@@ -10,6 +10,10 @@ from djangoProject.clase.models import notas as calificacion
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from .form import Nota
+from django.template.loader import render_to_string
+from reportlab.pdfgen import canvas
+import io
+from django.http import FileResponse
 def c(request):
      return render(request,"academico/index.html")
 def login(request):
@@ -229,16 +233,76 @@ def promedio_general(request,materias):
     criterio2 = Q(materia=materi)
     criterio3 = Q(periodo=periodos)
     promedio=[]
-    datos={}
+    datos=[]
     for alumno in alumnos:
         criterio1 = Q(alumno=alumno)
         h=calificacion.objects.filter(criterio1 & criterio2 & criterio3).exists()
         if h:
+            listas={}
             c = calificacion.objects.get(criterio1 & criterio2 & criterio3)
             promedio.append(c.nota)
+            listas["nombre"]=alumno.nombre
+            listas["apellido"]=alumno.apellido
+            listas["id"] = alumno.id
+            listas["nota"] = c.nota
+            datos.append(listas)
         else:
-            pass
-    print(promedio)
+            listas = {}
+            listas["nombre"] = alumno.nombre
+            listas["apellido"] = alumno.apellido
+            listas["id"] = alumno.id
+            listas["nota"] = "-"
+            datos.append(listas)
+    print(datos)
+    notas_prom=0
+    for promedios in promedio:
+        notas_prom+=promedios
+
+    promf=notas_prom/len(promedio)
+    print(promf)
 
 
-    return render(request, "academico/ver_alumno.html")
+    return render(request, "academico/ver_alumno.html",{"datos":datos,"is_prom":True,"promedio":promf})
+def tabla(self, pdf, partes, y):
+    width, height = A4
+
+    headers = ('Unidad', 'Fecha', 'Produccion', 'Real', 'Plan', 'Cantidad', 'TOTAL')
+    items = [(item.unidad,
+              item.fecha,
+              item.produccion,
+              item.real,
+              item.plan,
+              item.cant,
+              item.total) for item in partes]
+    table = Table([headers] + items, colWidths=80)
+    table.setStyle(TableStyle(
+        [
+            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+            ('ALING', (0, 0), (3, 0), 'CENTER'),
+            ('GRID', (0, 0), (6, -1), 1, colors.black),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.lightslategray),
+            ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ]
+    ))
+    table.wrapOn(pdf, width, height)
+    table.drawOn(pdf, 20, y)
+    pdf.showPage()
+def export_pdf(request):
+    buffer = io.BytesIO()
+
+    # Cree el objeto PDF, utilizando el búfer como su "archivo".
+    p = canvas.Canvas(buffer)
+
+    # Dibuja cosas en el PDF. Aquí es donde ocurre la generación de PDF.
+    # Consulte la documentación de ReportLab para obtener la lista completa de funciones.
+    p.drawString(100, 100, "Hello world.")
+
+    # Cierre el objeto PDF limpiamente y listo.
+    p.showPage()
+    p.save()
+
+    # FileResponse establece el encabezado Content-Disposition para que los navegadores
+    # presenta la opción para guardar el archivo.
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')

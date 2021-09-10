@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
 <body>
 {% include 'header.html' %}
 <section class="slider">
-    {% if existe %}
+    {% if existe or is_prom %}
 
                 <table >
                       <th scope="col">ID</th>
@@ -16,13 +17,24 @@
                             <th class="ta" scope="col">APELLIDOS</th>
                             <th scope="col" class="text-center" colspan="3">NOTA</th>
                         </tr>
-
+                  {% if existe %}
                             <tr>
 
                             <td>{{info.id }}</td>
                             <td>{{info.nombre  }}</td>
                             <td>{{info.apellido  }}</td>
                             <td>{{ info.nota }}</td>
+                      </tr>
+                               {% elif is_prom %}
+                               {% for dato in datos %}
+                                   <tr>
+                                   <td>{{dato.id }}</td>
+                            <td>{{dato.nombre}}</td>
+                            <td>{{dato.apellido  }}</td>
+                            <td>{{ dato.nota }}</td>
+                               {% endfor %}
+                      </tr>
+                           {% endif %}
 
                         </tr>
 
@@ -32,12 +44,14 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                                {% if is_prom %}
                             <td>Promedio General</td>
-                            <td>20</td>
+                            <td>{{ promedio }}</td>
+                                {% endif %}
                         </tr>
                 </table>
     {% else %}
-        <
+
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
 
             <h1>No existe nota todavia en el registro</h1>
@@ -48,5 +62,8 @@
         </script>
     {% endif %}
 </section>
+<div class="contenido" align="right">
+<button type="button" onclick="window.location.href='{% url "export" %}'" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Descargar" ><a class="fa fa-download">sdf</a></button>
+</div>
 </body>
 </html>
