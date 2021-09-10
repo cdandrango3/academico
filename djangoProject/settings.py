@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.urls import reverse_lazy
+
 from djangoProject import academico
 from djangoProject import clase
 
@@ -68,13 +70,17 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
+
+
+
         },
     },
 ]
 
 WSGI_APPLICATION = 'djangoProject.wsgi.application'
-
+AUTH_USER_MODEL = 'clase.Users'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -118,7 +124,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include 'header.html' %}
+<br><br><br><br><br>
+
+
+{% if metodo == "eliminar" %}
+
+    <div class="container">
+       <div class="alert alert-danger" role="alert">
+       Se ha eliminado correctamente
+   </div>
+
+{% else %}
+        <div class="container">
+       <div class="alert alert-success" role="alert">
+       Se ha editado correctamente
+   </div>
+        {% endif %}
+</div>
+</body>
+</html>

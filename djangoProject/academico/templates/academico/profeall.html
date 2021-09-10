@@ -9,7 +9,20 @@
 </head>
 <body>
 {% include 'header.html' %}
+
 <br><br><br><br><br>
-<h1>Bienvenidos</h1>
+{% if request.user.groups.all.0.name == 'estudiante' %}
+<p>eres estudiante</p>
+{% endif %}
+{% if request.user.groups.all.0.name == 'profesor' %}
+<p>eres profesor</p>
+{% endif %}
+{% for nom in name %}
+    <p>{{ nom.nombre }}</p>
+{% endfor %}
 </body>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="assets/js/vanilla-zoom.js"></script>
+    <script src="assets/js/theme.js"></script>
 </html>

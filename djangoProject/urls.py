@@ -15,15 +15,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from djangoProject.academico.views import c
-from djangoProject.academico.views import login
-from djangoProject.academico.views import allprofe
 
+# from django.contrib.auth import login
+from djangoProject.academico.views import allprofe, promedio_general
+from djangoProject.academico.views import c, notas, thank, eliminar, ver
+from djangoProject.academico.views import editar_curso
+from djangoProject.academico.views import elegir_curso
+from djangoProject.academico.views import login
+from djangoProject.academico.views import logout
+from djangoProject.academico.views import perfil
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',c),
     path('login/',login),
-    path('profesores',allprofe)
-
+    path('profesores',allprofe),
+    path('logout/',logout),
+    path('perfil/',perfil),
+    path('curso/',elegir_curso),
+    path('editar/<str:materias>',editar_curso,name="editar"),
+    path('notas/<str:materias>/<int:alum>',notas,name="notas"),
+    path('eliminar/<str:materias>/<int:alum>',eliminar,name="eliminar"),
+    path('ver/<str:materias>/<int:alum>',ver,name="ver"),
+    path('promcurso/<str:materias>',promedio_general,name="promedio"),
+    path('thank/',thank)
+    #path('login/',login,{'template_name':'login.html'}, name='login'),
 ]

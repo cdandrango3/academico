@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <link rel="stylesheet" href="../../static/academico/css/untitled.css">
     <link rel="stylesheet" href="../../static/academico/css/vanilla-zoom.min.css">
+        <link rel="stylesheet" href="../../static/academico/css/editaralum.css">
+
     {% endblock stylesheets %}
 
 </head>
@@ -18,7 +20,46 @@
 {% block header %}
 <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary clean-navbar">
         <div class="container"><a class="navbar-brand logo" href="#"><img src="{% static 'academico/img/avatars/central.png' %}" width="50px"></a></div>
+{% if user.is_authenticated %}
+<div class="row mr-5">
+   <div class="col-lg-6 col-12 mr-5">
+       {% for nom in name %}
+    <p>{{ nom.nombre }}</p>
+{% endfor %}
+
+   </div>
+<div class="col-lg-6 col-12 mr-5">
+     <button type="button" class="btn btn-success" onclick="window.location.href='/logout'">Cerrar Sesion</button>
+</div>
+</div>
+    
+{% else %}
+ <li class="btn btn-success">Iniciar Sesion</li>
+{% endif %}
+</nav>
+{% if request.user.groups.all.0.name == 'profesor' %}
+    <br>
+    <br>
+    <br>
+    <br>
+  <div class="container d-none d-lg-block d-xl-block">
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean">
+        <div class="container"><a class="navbar-brand" href="#"></a><button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/perfil">Perfil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/curso">Escoger cursos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Third Item</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
+</div>
+{% endif %}
+    {% if request.user.groups.all.0.name == 'estudiante' %}
+
+    {% endif %}
 {% endblock header %}
+
 </body>
 </html>
