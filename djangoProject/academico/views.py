@@ -95,6 +95,7 @@ def editar_curso(request,materias):
          materi=materia.objects.get(id=materias)
          codigo_curso=materi.curso_materia.Curso_codigo
          alumnos = estudiante.objects.filter(curso_id__Curso_codigo=codigo_curso)
+         periodos=periodo.objects.get(is_active=True)
 
          list_alumnos = [listas for listas in alumnos.values()]
          existe=[]
@@ -103,7 +104,8 @@ def editar_curso(request,materias):
              estudiantes=listas['id']
              criterio1 = Q(alumno=estudiantes)
              criterio2 = Q(materia=materi)
-             c = calificacion.objects.filter(criterio1 & criterio2).exists()
+             criterio3 = Q(periodo=periodos)
+             c = calificacion.objects.filter(criterio1 & criterio2 & criterio3).exists()
              listas['status']=c
              existe.append(listas)
          if request.method == 'POST':
@@ -147,11 +149,12 @@ def notas(request,materias,alum):
         elif userGroup == 'profesor':
             estudiantes = estudiante.objects.get(id=alum)
             materi = materia.objects.get(id=materias)
-
+            periodos = periodo.objects.get(is_active=True)
 
             criterio1=Q(alumno=estudiantes)
             criterio2 = Q(materia=materi)
-            c=calificacion.objects.filter(criterio1 & criterio2).exists()
+            criterio3 = Q(periodo=periodos)
+            c=calificacion.objects.filter(criterio1 & criterio2 & criterio3).exists()
             if c:
                 h = calificacion.objects.get(criterio1 & criterio2)
                 print(h.nota)
@@ -166,7 +169,7 @@ def notas(request,materias,alum):
 
                     if c:
 
-                        consulta=calificacion.objects.filter(criterio1 & criterio2).update(nota=nota)
+                        consulta=calificacion.objects.filter(criterio1 & criterio2 & criterio3).update(nota=nota)
 
 
 
@@ -263,46 +266,48 @@ def promedio_general(request,materias):
 
 
     return render(request, "academico/ver_alumno.html",{"datos":datos,"is_prom":True,"promedio":promf})
-def tabla(self, pdf, partes, y):
-    width, height = A4
+def notas_estudiante(request):
+    if request.user.is_authenticated:
+        userGroup = Group.objects.get(user=request.user).name
+        print(userGroup)
+        if userGroup == 'estudiante':
+            fr=estudiante.objects.get(id=request.user.username)
+            f=curso.objects.get(Curso_codigo=fr.curso_id.Curso_codigo)
 
-    headers = ('Unidad', 'Fecha', 'Produccion', 'Real', 'Plan', 'Cantidad', 'TOTAL')
-    items = [(item.unidad,
-              item.fecha,
-              item.produccion,
-              item.real,
-              item.plan,
-              item.cant,
-              item.total) for item in partes]
-    table = Table([headers] + items, colWidths=80)
-    table.setStyle(TableStyle(
-        [
-            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
-            ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
-            ('ALING', (0, 0), (3, 0), 'CENTER'),
-            ('GRID', (0, 0), (6, -1), 1, colors.black),
-            ('BACKGROUND', (0, 0), (-1, 0), colors.lightslategray),
-            ('FONTSIZE', (0, 0), (-1, -1), 10),
-        ]
-    ))
-    table.wrapOn(pdf, width, height)
-    table.drawOn(pdf, 20, y)
-    pdf.showPage()
-def export_pdf(request):
-    buffer = io.BytesIO()
+            vc=materia.objects.filter(curso_materia=f)
+            print(vc.values())
+            g=[]
+            for mate in vc:
+                dato={}
+                dato["materia"]=mate.nombre_materia
+                criterio1 = Q(materia=mate)
+                criterio2 = Q(alumno=request.user.username)
+                is_exists=calificacion.objects.filter(criterio1 & criterio2).exists()
+                print(is_exists)
+                if(is_exists):
+                    periodos=periodo.objects.all()
+                    print(periodos)
+                    for period in periodos:
+                      criterio3=Q(periodo=period)
+                      cali = calificacion.objects.filter(criterio1 & criterio2 & criterio3)
+                      if cali.exists():
+                          nota=calificacion.objects.get(criterio1 & criterio2 & criterio3)
+                          dato[period.periodoid]=nota.nota
+                      else:
 
-    # Cree el objeto PDF, utilizando el búfer como su "archivo".
-    p = canvas.Canvas(buffer)
+                          dato[period.periodoid] = "-"
 
-    # Dibuja cosas en el PDF. Aquí es donde ocurre la generación de PDF.
-    # Consulte la documentación de ReportLab para obtener la lista completa de funciones.
-    p.drawString(100, 100, "Hello world.")
 
-    # Cierre el objeto PDF limpiamente y listo.
-    p.showPage()
-    p.save()
 
-    # FileResponse establece el encabezado Content-Disposition para que los navegadores
-    # presenta la opción para guardar el archivo.
-    buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+
+                g.append(dato)
+
+
+
+            print(g)
+            print(dato)
+
+
+        return render(request,"academico/nota_alumno.html" ,{"datos":g})
+
+
