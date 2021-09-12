@@ -277,6 +277,7 @@ def notas_estudiante(request):
             vc=materia.objects.filter(curso_materia=f)
             print(vc.values())
             g=[]
+            promedio_final=[]
             for mate in vc:
                 dato={}
                 dato["materia"]=mate.nombre_materia
@@ -296,6 +297,12 @@ def notas_estudiante(request):
                       else:
 
                           dato[period.periodoid] = "-"
+                if dato["PRI1Q"]=="-" or dato["PRI2Q"]=="-":
+                    promedio="-"
+                else:
+                    promedio = (dato["PRI1Q"] + dato["PRI2Q"]) / 2
+                    promedio_final.append(promedio)
+                dato["final"]=promedio
 
 
 
@@ -304,10 +311,15 @@ def notas_estudiante(request):
 
 
 
+
             print(g)
-            print(dato)
+            print(promedio)
+        prof=0
+        for promediof in promedio_final:
+            prof += promediof
+        profi=prof/len(promedio_final)
+        print(profi)
 
-
-        return render(request,"academico/nota_alumno.html" ,{"datos":g})
+        return render(request,"academico/nota_alumno.html" ,{"datos":g,"profi":profi})
 
 

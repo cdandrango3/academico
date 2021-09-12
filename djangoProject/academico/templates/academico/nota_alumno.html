@@ -7,11 +7,12 @@
 <body>
 {% include 'header.html' %}
 <br><br><br><br>
+<div class="container">
 <table>
                       <th scope="col">Materia</th>
                             <th class="ta" scope="col">Primer Quimestre</th>
                             <th class="ta" scope="col">Segundo Quimestre</th>
-
+                             <th class="ta" scope="col">Nota final</th>
 
                         </tr>
 
@@ -20,6 +21,7 @@
                                    <td>{{dato.materia}}</td>
                             <td>{{dato.PRI1Q}}</td>
                             <td>{{ dato.PRI2Q }}</td>
+                                       <td>{{ dato.final }}</td>
                                </tr>
                                {% endfor %}
 
@@ -28,5 +30,14 @@
                         </tr>
 
                 </table>
+    <br>
+    <br>
+<table>
+<tr>
+    <td>Promedio final</td>
+    <td>{{ profi }}</td>
+</tr>
+</table>
+</div>
 </body>
 </html>

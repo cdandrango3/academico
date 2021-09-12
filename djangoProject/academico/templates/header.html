@@ -42,7 +42,8 @@
     <br>
     <br>
     <br>
-  <div class="container d-none d-lg-block d-xl-block">
+    <br>
+
     <nav class="navbar navbar-light navbar-expand-md navigation-clean">
         <div class="container"><a class="navbar-brand" href="#"></a><button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
@@ -54,14 +55,13 @@
             </div>
         </div>
     </nav>
-</div>
+
 {% endif %}
     {% if request.user.groups.all.0.name == 'estudiante' %}
  <br>
     <br>
     <br>
     <br>
-  <div class="container d-none d-lg-block d-xl-block">
     <nav class="navbar navbar-light navbar-expand-md navigation-clean">
         <div class="container"><a class="navbar-brand" href="#"></a><button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
@@ -72,7 +72,7 @@
             </div>
         </div>
     </nav>
-    </nav>
+
     {% endif %}
 {% endblock header %}
 
