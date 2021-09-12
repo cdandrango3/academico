@@ -1,0 +1,94 @@
+.navigation-clean {
+  background: #050B54; 
+width:  100%;
+margin: auto;
+position: fixed;
+top: 0%;
+left: 0%;
+z-index: 100;
+
+}
+
+@media (min-width:0px) {
+  .navigation-clean {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  
+  }
+}
+
+
+.navigation-clean .navbar-brand:hover {
+  color: rgb(34, 187, 42);
+}
+
+.navigation-clean .navbar-toggler {
+  border-color: rgb(189, 41, 41);
+}
+
+.navigation-clean .navbar-toggler:hover, .navigation-clean .navbar-toggler:focus {
+  background: none;
+}
+
+.navigation-clean .navbar-toggler {
+  color: #888;
+}
+
+.navigation-clean.navbar-light .navbar-nav .nav-link.active, .navigation-clean.navbar-light .navbar-nav .nav-link.active:focus, .navigation-clean.navbar-light .navbar-nav .nav-link.active:hover {
+  color: #f3f7f1;
+  box-shadow: none;
+  background: none;
+  pointer-events: none;
+}
+
+.navigation-clean.navbar .navbar-nav .nav-link {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.navigation-clean.navbar-light .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.navigation-clean.navbar-light .navbar-nav .nav-link:focus, .navigation-clean.navbar-light .navbar-nav .nav-link:hover {
+  color: #37434d !important;
+  background-color: transparent;
+}
+
+.navigation-clean .navbar-nav > li > .dropdown-menu {
+  margin-top: -5px;
+  box-shadow: none;
+  background-color: rgb(255, 255, 255);
+  border-radius: 2px;
+}
+
+.navigation-clean .dropdown-menu .dropdown-item:focus, .navigation-clean .dropdown-menu .dropdown-item {
+  line-height: 2;
+  color: #37434d;
+}
+
+.navigation-clean .dropdown-menu .dropdown-item:focus, .navigation-clean .dropdown-menu .dropdown-item:hover {
+  background: #eee;
+  color: inherit;
+}
+
+.text h2 {
+  color: #050B54;
+}
+
+.form-check-label{
+  color: #050B54;
+}
+
+table {  color: #333; font-family: Helvetica, Arial, sans-serif; width: 640px; border-collapse: collapse;}
+
+td, th { border: 1px solid transparent; height: 30px; }
+
+th { background: #D3D3D3; font-weight: bold; }
+
+td { background: #FAFAFA; text-align: center; }
+
+tr:nth-child(even) td { background: #F1F1F1; }  
+
+tr:nth-child(odd) td { background: #FEFEFE; } 
+

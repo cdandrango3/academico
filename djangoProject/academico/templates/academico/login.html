@@ -14,9 +14,8 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary clean-navbar">
-        <div class="container"><a class="navbar-brand logo" href="#"><img src="{% static 'academico/img/avatars/central.png' %}" width="50px"></a></div>
-    </nav>
+{% include 'header.html' %}
+    <button type="button" class="btn btn-success" onclick="window.location.href='/logout'">Cerrar Sesion</button>
 
     <div class="container"></div>
     <div class="container-fluid form" style="top:100px">

@@ -10,10 +10,9 @@ from djangoProject.clase.models import notas as calificacion
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from .form import Nota
-from django.template.loader import render_to_string
-from reportlab.pdfgen import canvas
-import io
-from django.http import FileResponse
+from .utils import render_to_pdf
+
+
 def c(request):
      return render(request,"academico/index.html")
 def login(request):
@@ -156,7 +155,7 @@ def notas(request,materias,alum):
             criterio3 = Q(periodo=periodos)
             c=calificacion.objects.filter(criterio1 & criterio2 & criterio3).exists()
             if c:
-                h = calificacion.objects.get(criterio1 & criterio2)
+                h = calificacion.objects.get(criterio1 & criterio2 & criterio3)
                 print(h.nota)
             print(c)
             if request.method == 'POST':
@@ -227,7 +226,7 @@ def ver(request,materias,alum):
     else:
         dato={}
         exits=False
-    return render(request,"academico/ver_alumno.html",{"info":dato,"existe":exits})
+    return render(request,"academico/ver_alumno.html",{"periodo":periodos.nombre_periodo,"curso":materi.curso_materia.Nivel + " ' " + materi.curso_materia.Paralelo + " ' " ,"info":dato,"existe":exits})
 def promedio_general(request,materias):
     materi = materia.objects.get(id=materias)
     codigo_curso = materi.curso_materia.Curso_codigo
@@ -265,7 +264,7 @@ def promedio_general(request,materias):
     print(promf)
 
 
-    return render(request, "academico/ver_alumno.html",{"datos":datos,"is_prom":True,"promedio":promf})
+    return render(request, "academico/ver_alumno.html",{"periodo":periodos.nombre_periodo,"curso":materi.curso_materia.Nivel + " ' " + materi.curso_materia.Paralelo + " ' ","datos":datos,"is_prom":True,"promedio":promf,"materia":materias})
 def notas_estudiante(request):
     if request.user.is_authenticated:
         userGroup = Group.objects.get(user=request.user).name
@@ -320,6 +319,37 @@ def notas_estudiante(request):
         profi=prof/len(promedio_final)
         print(profi)
 
-        return render(request,"academico/nota_alumno.html" ,{"datos":g,"profi":profi})
+        return render(request,"academico/nota_alumno.html" ,{"curso":f.Nivel+ " ' "+ f.Paralelo + " ", "nombre": fr.nombre + " "+ fr.apellido,"datos":g,"profi":profi})
 
-
+def export_pdf(request,materias):
+    materi = materia.objects.get(id=materias)
+    codigo_curso = materi.curso_materia.Curso_codigo
+    alumnos = estudiante.objects.filter(curso_id__Curso_codigo=codigo_curso)
+    periodos = periodo.objects.get(is_active=True)
+    criterio2 = Q(materia=materi)
+    criterio3 = Q(periodo=periodos)
+    promedio = []
+    datos = []
+    for alumno in alumnos:
+        criterio1 = Q(alumno=alumno)
+        h = calificacion.objects.filter(criterio1 & criterio2 & criterio3).exists()
+        if h:
+            listas = {}
+            c = calificacion.objects.get(criterio1 & criterio2 & criterio3)
+            promedio.append(c.nota)
+            listas["nombre"] = alumno.nombre
+            listas["apellido"] = alumno.apellido
+            listas["id"] = alumno.id
+            listas["nota"] = c.nota
+            datos.append(listas)
+        else:
+            listas = {}
+            listas["nombre"] = alumno.nombre
+            listas["apellido"] = alumno.apellido
+            listas["id"] = alumno.id
+            listas["nota"] = "-"
+            datos.append(listas)
+    pdf = render_to_pdf('academico/nota_alumno.html', {
+        "dato":datos
+    })
+    return HttpResponse(pdf, content_type='application/pdf')

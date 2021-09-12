@@ -11,13 +11,57 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <link rel="stylesheet" href="../../static/academico/css/untitled.css">
     <link rel="stylesheet" href="../../static/academico/css/vanilla-zoom.min.css">
-        <link rel="stylesheet" href="../../static/academico/css/editaralum.css">
-
+  <link rel="stylesheet" href="{% static 'academico/css/editaralum.css' %}">
     {% endblock stylesheets %}
 
 </head>
 <body>
 {% block header %}
+<div class="container mb-5">
+
+    <div class="container d-none d-lg-block d-xl-block">
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean ">
+        <div class="container"><a class="navbar-brand" href="#"></a><button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span class="visually-hidden">Menú</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <img src={% static 'academico/img/SELLO.png' %} width="50px" >
+
+                <ul class="navbar-nav ms-auto" color="blue">
+{% if user.is_authenticated %}
+                       {% if request.user.groups.all.0.name == 'profesor' %}
+                    <li class="nav-item "><a class="nav-link " href="/perfil">Perfl</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/curso"> Editar_nota</a></li>
+                    <li class="nav-item dropdown-toggle"> <a class="dropdown-toggle nav-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+Cerrar sesion
+                        {% endif %}
+                       {% if request.user.groups.all.0.name == 'estudiante' %}
+             <li class="nav-item "><a class="nav-link " href="/perfil">Perfil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url "notaestudiante" %}"> Ver notas</a></li>
+                    <li class="nav-item dropdown-toggle"> <a class="dropdown-toggle nav-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+Cerrar sesion
+                           {% endif %}
+  </a>
+  <div class="dropdown-menu ">
+    <button class="dropdown-item" type="button" onclick="window.location.href='/logout'">Cerrar Sesion</button>
+      </li>
+  </div>
+                </ul>
+
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+{% endblock header %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/7182aa1bd3.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/7182aa1bd3.js" crossorigin="anonymous"></script>
+    <script src="{% static 'academico/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+</body>
+
+<!------</html>
 <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary clean-navbar">
         <div class="container"><a class="navbar-brand logo" href="#"><img src="{% static 'academico/img/avatars/central.png' %}" width="50px"></a></div>
 {% if user.is_authenticated %}
@@ -74,7 +118,4 @@
     </nav>
 
     {% endif %}
-{% endblock header %}
-
-</body>
-</html>
+---->

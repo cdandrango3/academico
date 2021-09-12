@@ -8,6 +8,12 @@
 </head>
 <body>
 {% include 'header.html' %}
+<br><br><br><br><br><br>
+<div class="cont">
+    <h2>Curso: {{ curso }}</h2>
+    <h2>Periodo: {{ periodo }}</h2>
+</div>
+<br><br><br><br><br><br><br>
 <section class="slider">
     {% if existe or is_prom %}
 
@@ -63,7 +69,7 @@
     {% endif %}
 </section>
 <div class="contenido" align="right">
-<button type="button"  class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Descargar" ><a class="fa fa-download">sdf</a></button>
+<button type="button"  onclick="window.location.href='{% url 'pdf-export' materia %}'" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Descargar" ><a class="fa fa-download">sdf</a></button>
 </div>
 
 </body>
