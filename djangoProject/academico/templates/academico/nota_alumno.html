@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include 'header.html' %}
+<br><br><br><br>
+<table>
+                      <th scope="col">Materia</th>
+                            <th class="ta" scope="col">Primer Quimestre</th>
+                            <th class="ta" scope="col">Segundo Quimestre</th>
+
+
+                        </tr>
+
+                               {% for dato in datos %}
+                                   <tr>
+                                   <td>{{dato.materia}}</td>
+                            <td>{{dato.PRI1Q}}</td>
+                            <td>{{ dato.PRI2Q }}</td>
+                               </tr>
+                               {% endfor %}
+
+
+
+                        </tr>
+
+                </table>
+</body>
+</html>

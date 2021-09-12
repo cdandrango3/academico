@@ -24,7 +24,9 @@ from djangoProject.academico.views import elegir_curso
 from djangoProject.academico.views import login
 from djangoProject.academico.views import logout
 from djangoProject.academico.views import perfil
-from djangoProject.academico.views import export_pdf
+from djangoProject.academico.views import notas_estudiante
+
+#from djangoProject.academico.views import export_pdf
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',c),
@@ -38,7 +40,8 @@ urlpatterns = [
     path('eliminar/<str:materias>/<int:alum>',eliminar,name="eliminar"),
     path('ver/<str:materias>/<int:alum>',ver,name="ver"),
     path('promcurso/<str:materias>',promedio_general,name="promedio"),
+    path('nota_estudiante/',notas_estudiante,name="notaestudiante"),
     path('thank/',thank),
-    path('export/', export_pdf, name="export")
+    #path('export/', export_pdf, name="export")
     #path('login/',login,{'template_name':'login.html'}, name='login'),
 ]
