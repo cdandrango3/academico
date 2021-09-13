@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 def render_to_pdf(template_src, context_dict={}):
     template = get_template(template_src)
 
-    context=Context(context_dict)
+    context=context_dict
     html  = template.render(context)
     result = BytesIO()
 

@@ -41,7 +41,7 @@ urlpatterns = [
     path('ver/<str:materias>/<int:alum>',ver,name="ver"),
     path('promcurso/<str:materias>',promedio_general,name="promedio"),
     path('nota_estudiante/',notas_estudiante,name="notaestudiante"),
-    path('exportpdf/<str:materias>',export_pdf,name="pdf-export"),
+    path('exportpdf',export_pdf,name="pdf-export"),
     path('thank/',thank),
     #path('export/', export_pdf, name="export")
     #path('login/',login,{'template_name':'login.html'}, name='login'),

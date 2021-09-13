@@ -9,8 +9,9 @@ from djangoProject.clase.models import materia,curso,periodo
 from djangoProject.clase.models import notas as calificacion
 from django.contrib.auth.models import Group
 from django.db.models import Q
-from .form import Nota
 from .utils import render_to_pdf
+from .form import Nota
+
 
 
 def c(request):
@@ -321,35 +322,55 @@ def notas_estudiante(request):
 
         return render(request,"academico/nota_alumno.html" ,{"curso":f.Nivel+ " ' "+ f.Paralelo + " ", "nombre": fr.nombre + " "+ fr.apellido,"datos":g,"profi":profi})
 
-def export_pdf(request,materias):
-    materi = materia.objects.get(id=materias)
-    codigo_curso = materi.curso_materia.Curso_codigo
-    alumnos = estudiante.objects.filter(curso_id__Curso_codigo=codigo_curso)
-    periodos = periodo.objects.get(is_active=True)
-    criterio2 = Q(materia=materi)
-    criterio3 = Q(periodo=periodos)
-    promedio = []
-    datos = []
-    for alumno in alumnos:
-        criterio1 = Q(alumno=alumno)
-        h = calificacion.objects.filter(criterio1 & criterio2 & criterio3).exists()
-        if h:
-            listas = {}
-            c = calificacion.objects.get(criterio1 & criterio2 & criterio3)
-            promedio.append(c.nota)
-            listas["nombre"] = alumno.nombre
-            listas["apellido"] = alumno.apellido
-            listas["id"] = alumno.id
-            listas["nota"] = c.nota
-            datos.append(listas)
+def export_pdf(request):
+    alum=request.GET.get('usuario')
+    print(alum)
+    fr = estudiante.objects.get(id=alum)
+    print(request.user.username)
+    f = curso.objects.get(Curso_codigo=fr.curso_id.Curso_codigo)
+
+    vc = materia.objects.filter(curso_materia=f)
+    print(vc.values())
+    g = []
+    promedio_final = []
+    for mate in vc:
+        dato = {}
+        dato["materia"] = mate.nombre_materia
+        criterio1 = Q(materia=mate)
+        criterio2 = Q(alumno=request.user.username)
+        is_exists = calificacion.objects.filter(criterio1 & criterio2).exists()
+        print(is_exists)
+        if (is_exists):
+            periodos = periodo.objects.all()
+            print(periodos)
+            for period in periodos:
+                criterio3 = Q(periodo=period)
+                cali = calificacion.objects.filter(criterio1 & criterio2 & criterio3)
+                if cali.exists():
+                    nota = calificacion.objects.get(criterio1 & criterio2 & criterio3)
+                    dato[period.periodoid] = nota.nota
+                else:
+
+                    dato[period.periodoid] = "-"
+        if dato["PRI1Q"] == "-" or dato["PRI2Q"] == "-":
+            promedio = "-"
         else:
-            listas = {}
-            listas["nombre"] = alumno.nombre
-            listas["apellido"] = alumno.apellido
-            listas["id"] = alumno.id
-            listas["nota"] = "-"
-            datos.append(listas)
-    pdf = render_to_pdf('academico/nota_alumno.html', {
-        "dato":datos
-    })
+            promedio = (dato["PRI1Q"] + dato["PRI2Q"]) / 2
+            promedio_final.append(promedio)
+        dato["final"] = promedio
+        print(dato)
+        g.append(dato)
+        prof=0
+    for promediof in promedio_final:
+        prof += promediof
+    profi=prof/len(promedio_final)
+    print(profi)
+
+
+    pdf = render_to_pdf('academico/nota_alumno.html',
+    {
+        "datos":g,
+        "profi":profi
+          }
+                        )
     return HttpResponse(pdf, content_type='application/pdf')
