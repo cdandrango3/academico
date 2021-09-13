@@ -10,7 +10,7 @@ from djangoProject.clase.models import notas as calificacion
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from .form import Nota
-from .utils import render_to_pdf
+
 
 
 def c(request):
