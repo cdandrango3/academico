@@ -269,7 +269,6 @@ def promedio_general(request,materias):
 def notas_estudiante(request):
     if request.user.is_authenticated:
         userGroup = Group.objects.get(user=request.user).name
-        print(userGroup)
         if userGroup == 'estudiante':
             fr=estudiante.objects.get(id=request.user.username)
             f=curso.objects.get(Curso_codigo=fr.curso_id.Curso_codigo)
@@ -297,13 +296,17 @@ def notas_estudiante(request):
                       else:
 
                           dato[period.periodoid] = "-"
-                if dato["PRI1Q"]=="-" or dato["PRI2Q"]=="-":
-                    promedio="-"
+                    if dato["PRI1Q"]=="-" or dato["PRI2Q"]=="-":
+                      promedio="-"
+                    else:
+                        promedio = (dato["PRI1Q"] + dato["PRI2Q"]) / 2
+                        promedio_final.append(promedio)
+                    dato["final"]=promedio
                 else:
-                    promedio = (dato["PRI1Q"] + dato["PRI2Q"]) / 2
-                    promedio_final.append(promedio)
-                dato["final"]=promedio
-
+                    dato["PRI1Q"] = "-"
+                    dato["PRI2Q"] = "-"
+                    promedio = "-"
+                    dato["final"] = promedio
 
 
 
@@ -317,8 +320,11 @@ def notas_estudiante(request):
         prof=0
         for promediof in promedio_final:
             prof += promediof
-        profi=prof/len(promedio_final)
-        print(profi)
+        if prof != 0:
+            profi=prof/len(promedio_final)
+            print(profi)
+        else:
+            profi="-"
 
         return render(request,"academico/nota_alumno.html" ,{"curso":f.Nivel+ " ' "+ f.Paralelo + " ", "nombre": fr.nombre + " "+ fr.apellido,"datos":g,"profi":profi})
 
@@ -330,9 +336,8 @@ def export_pdf(request):
     f = curso.objects.get(Curso_codigo=fr.curso_id.Curso_codigo)
 
     vc = materia.objects.filter(curso_materia=f)
-    print(vc.values())
-    g = []
     promedio_final = []
+    g = []
     for mate in vc:
         dato = {}
         dato["materia"] = mate.nombre_materia
@@ -352,25 +357,36 @@ def export_pdf(request):
                 else:
 
                     dato[period.periodoid] = "-"
-        if dato["PRI1Q"] == "-" or dato["PRI2Q"] == "-":
-            promedio = "-"
+            if dato["PRI1Q"] == "-" or dato["PRI2Q"] == "-":
+                promedio = "-"
+            else:
+                promedio = (dato["PRI1Q"] + dato["PRI2Q"]) / 2
+                promedio_final.append(promedio)
+            dato["final"] = promedio
         else:
-            promedio = (dato["PRI1Q"] + dato["PRI2Q"]) / 2
-            promedio_final.append(promedio)
-        dato["final"] = promedio
-        print(dato)
+            dato["PRI1Q"] = "-"
+            dato["PRI2Q"] = "-"
+            promedio = "-"
+            dato["final"] = promedio
+
         g.append(dato)
-        prof=0
+        print()
+
+
+    prof = 0
     for promediof in promedio_final:
         prof += promediof
-    profi=prof/len(promedio_final)
-    print(profi)
-
+    if prof != 0:
+        profi = prof / len(promedio_final)
+        print(profi)
+    else:
+        profi = "-"
 
     pdf = render_to_pdf('academico/nota_alumno.html',
     {
         "datos":g,
-        "profi":profi
+        "profi":profi,
+        "curso": f.Nivel + " ' " + f.Paralelo + " ", "nombre": fr.nombre + " " + fr.apellido
           }
                         )
     return HttpResponse(pdf, content_type='application/pdf')
