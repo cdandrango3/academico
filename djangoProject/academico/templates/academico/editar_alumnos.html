@@ -6,23 +6,7 @@
 
 </head>
 <body>
-<script type="text/javascript">
-   let radios = document.querySelectorAll("[type='radio']");
-   radios.forEach((x)=>{
-     x.dataset.val = x.checked; // guardamos el estado del radio button dentro del elemento
-     x.addEventListener('click',(e)=>{
-       let element = e.target;
-       if(element.dataset.val == 'false'){
-         element.dataset.val = 'true';
-         element.checked = true;
-       }else{
-         element.dataset.val = 'false';
-         element.checked = false;
-       }
-     },true);
-   });
 
-        </script>
 {% include 'header.html' %}
 <br><br>
 </div>
@@ -50,7 +34,7 @@
                     <input class="form-check-input" type="radio" name="ca" id="flexRadioDefault1">
                     <label class="form-check-label" for="flexRadioDefault1">Cédula</label></div>
                 <div class="form-check">
-                    <input class="form-check-input"  type="radio" name="ca" id="flexRadioDefault2">
+                    <input class="form-check-input"  type="radio" name="ca2" id="flexRadioDefault2" checked>
                     <label class="form-check-label" for="flexRadioDefault2">Nombre</label><BR> <BR> <BR>
                 </div>
                 </aside>
@@ -157,7 +141,12 @@ Fin de la cabecera -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/7182aa1bd3.js" crossorigin="anonymous"></script>
-
+<script>
+    $("input[type=radio]").on("click",function(){
+    $("input[type=radio]").prop("checked",false);
+     $(this).prop("checked",true);
+});
+</script>
 </body>
 
 </html>

@@ -112,8 +112,9 @@ def editar_curso(request,materias):
              search = request.POST['search']
              nom= request.POST.get('ca')
              print(nom)
-
-             if nom!=False:
+             nom2 = request.POST.get('ca2')
+             print(nom2)
+             if nom!=None:
                  criterio2 = Q(id__contains=search)
              else:
                  criterio2 = Q(nombre__contains=search)
