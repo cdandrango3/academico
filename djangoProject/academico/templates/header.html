@@ -5,12 +5,17 @@
 
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .sert{visibility:hidden}
+    </style>
+
     {% block stylesheets %}
     <link rel="stylesheet" href="../../static/academico/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <link rel="stylesheet" href="../../static/academico/css/untitled.css">
     <link rel="stylesheet" href="../../static/academico/css/vanilla-zoom.min.css">
+
   <link rel="stylesheet" href="{% static 'academico/css/editaralum.css' %}">
     {% endblock stylesheets %}
 
@@ -23,7 +28,7 @@
     <nav class="navbar navbar-light navbar-expand-md navigation-clean ">
         <div class="container"><a class="navbar-brand" href="#"></a><button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span class="visually-hidden">Menú</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
-                <img src={% static 'academico/img/SELLO.png' %} width="50px" >
+                <img src={% static 'academico/img/SELLO.png' %} width="50px" class="sert" >
 
                 <ul class="navbar-nav ms-auto" color="blue">
 {% if user.is_authenticated %}

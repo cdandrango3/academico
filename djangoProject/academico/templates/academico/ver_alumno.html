@@ -4,10 +4,66 @@
 <head>
     <meta charset="UTF-8">
     <title>Ver alumno</title>
+ <style>
+
+         table {
+        color: #333;
+        width: 300px;
+
+
+        text-align: center;
+    }
+
+
+
+td, th { border: 1px solid; height: 30px; }
+
+th { background-color: #D3D3D3; font-weight: bold; }
+
+td { background-color: #FAFAFA; text-align: center; }
+
+tr:nth-child(even) td { background: #F1F1F1; }
+
+tr:nth-child(odd) td { background: #FEFEFE; }
+        .btn-flotante {
+font-size: 16px; /* Cambiar el tamaño de la tipografia */
+text-transform: uppercase; /* Texto en mayusculas */
+font-weight: bold; /* Fuente en negrita o bold */
+color: #ffffff; /* Color del texto */
+border-radius: 100%; /* Borde del boton */
+letter-spacing: 2px; /* Espacio entre letras */
+background-color: #E91E63; /* Color de fondo */
+padding: 15px 15px 15px 15px; /* Relleno del boton */
+position: fixed;
+bottom: 40px;
+right: 40px;
+transition: all 300ms ease 0ms;
+box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+z-index: 99;
+}
+.btn-flotante:hover {
+background-color: #2c2fa5; /* Color de fondo al pasar el cursor */
+box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+transform: translateY(-7px);
+}
+@media only screen and (max-width: 600px) {
+.btn-flotante {
+font-size: 14px;
+padding: 12px 20px;
+bottom: 20px;
+right: 20px;
+}
+}
+    </style>
+
+
+
+
+    <!-- Compiled and minified JavaScript -->
 
 </head>
 <body>
-{% include 'header.html' %}
+ {% include 'header.html' %}
 <br><br><br><br><br><br>
 <div class="cont">
     <h2>Curso: {{ curso }}</h2>
@@ -45,32 +101,47 @@
                         </tr>
 
                 </table>
-                <table >
+        <br>
+        <br>
+
+                <table style="margin:40px">
                             <tr>
                             <td></td>
                             <td></td>
                             <td></td>
                                 {% if is_prom %}
-                            <td>Promedio General</td>
-                            <td>{{ promedio }}</td>
+                            <td style="font-weight:800" >Promedio General</td>
+                            <td >{{ promedio }}</td>
                                 {% endif %}
                         </tr>
                 </table>
+
     {% else %}
 
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
 
             <h1>No existe nota todavia en el registro</h1>
         </div>
-
+<div class="fixed-bottom">...</div>
         <script>
             $(".alert").alert();
         </script>
     {% endif %}
 </section>
-<div class="contenido" align="right">
-<button type="button"   class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Descargar" ><a class="fa fa-download">sdf</a></button>
-</div>
+ {% if is_prom %}
+<a href="/promedio_pdf?materia={{materia}}" id="vern" class="btn-flotante" data-toggle="tooltip"><i class="fas fa-arrow-down fa-2x" title="descargar"></i></a>
+ {% endif %}
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
 
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip('show')
+    $('#vern').tooltip('show')
+})
+
+  // Or with jQuery
+
+
+</script>
 </body>
 </html>

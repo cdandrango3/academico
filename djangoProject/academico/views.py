@@ -11,7 +11,7 @@ from django.contrib.auth.models import Group
 from django.db.models import Q
 from .utils import render_to_pdf
 from .form import Nota
-
+from .decimal import decimales
 
 
 def c(request):
@@ -112,8 +112,9 @@ def editar_curso(request,materias):
              search = request.POST['search']
              nom= request.POST.get('ca')
              print(nom)
-
-             if nom!=False:
+             nom2 = request.POST.get('ca2')
+             print(nom2)
+             if nom!=None:
                  criterio2 = Q(id__contains=search)
              else:
                  criterio2 = Q(nombre__contains=search)
@@ -262,10 +263,10 @@ def promedio_general(request,materias):
         notas_prom+=promedios
 
     promf=notas_prom/len(promedio)
-    print(promf)
 
 
-    return render(request, "academico/ver_alumno.html",{"periodo":periodos.nombre_periodo,"curso":materi.curso_materia.Nivel + " ' " + materi.curso_materia.Paralelo + " ' ","datos":datos,"is_prom":True,"promedio":promf,"materia":materias})
+
+    return render(request, "academico/ver_alumno.html",{"periodo":periodos.nombre_periodo,"curso":materi.curso_materia.Nivel + " ' " + materi.curso_materia.Paralelo + " ' ","datos":datos,"is_prom":True,"promedio":decimales(promf),"materia":materias})
 def notas_estudiante(request):
     if request.user.is_authenticated:
         userGroup = Group.objects.get(user=request.user).name
@@ -301,7 +302,7 @@ def notas_estudiante(request):
                     else:
                         promedio = (dato["PRI1Q"] + dato["PRI2Q"]) / 2
                         promedio_final.append(promedio)
-                    dato["final"]=promedio
+                    dato["final"]= decimales(promedio)
                 else:
                     dato["PRI1Q"] = "-"
                     dato["PRI2Q"] = "-"
@@ -326,8 +327,53 @@ def notas_estudiante(request):
         else:
             profi="-"
 
-        return render(request,"academico/nota_alumno.html" ,{"curso":f.Nivel+ " ' "+ f.Paralelo + " ", "nombre": fr.nombre + " "+ fr.apellido,"datos":g,"profi":profi})
+        return render(request,"academico/nota_alumno.html" ,{"curso":f.Nivel+ " ' "+ f.Paralelo + " ", "nombre": fr.nombre + " "+ fr.apellido,"datos":g,"profi":decimales(profi)})
+def promtpdf(request):
+    materias = request.GET.get('materia')
+    print(materias)
+    materi = materia.objects.get(id=materias)
+    codigo_curso = materi.curso_materia.Curso_codigo
+    alumnos = estudiante.objects.filter(curso_id__Curso_codigo=codigo_curso)
+    periodos = periodo.objects.get(is_active=True)
+    criterio2 = Q(materia=materi)
+    criterio3 = Q(periodo=periodos)
+    promedio = []
+    datos = []
+    for alumno in alumnos:
+        criterio1 = Q(alumno=alumno)
+        h = calificacion.objects.filter(criterio1 & criterio2 & criterio3).exists()
+        if h:
+            listas = {}
+            c = calificacion.objects.get(criterio1 & criterio2 & criterio3)
+            promedio.append(c.nota)
+            listas["nombre"] = alumno.nombre
+            listas["apellido"] = alumno.apellido
+            listas["id"] = alumno.id
+            listas["nota"] = c.nota
+            datos.append(listas)
+        else:
+            listas = {}
+            listas["nombre"] = alumno.nombre
+            listas["apellido"] = alumno.apellido
+            listas["id"] = alumno.id
+            listas["nota"] = "-"
+            datos.append(listas)
+    print(datos)
+    notas_prom = 0
+    for promedios in promedio:
+        notas_prom += promedios
 
+    promf = notas_prom / len(promedio)
+    pdf = render_to_pdf('academico/ver_alumno.html',
+                        {
+                            "datos": datos,
+                            "promedio": decimales(promf),
+                            "is_prom":True,
+                            "periodo": periodos.nombre_periodo,
+                            "curso": materi.curso_materia.Nivel + " ' " + materi.curso_materia.Paralelo + " ' "
+                        }
+                        )
+    return HttpResponse(pdf, content_type='application/pdf')
 def export_pdf(request):
     alum=request.GET.get('usuario')
     print(alum)
@@ -385,7 +431,7 @@ def export_pdf(request):
     pdf = render_to_pdf('academico/nota_alumno.html',
     {
         "datos":g,
-        "profi":profi,
+        "profi":decimales(profi),
         "curso": f.Nivel + " ' " + f.Paralelo + " ", "nombre": fr.nombre + " " + fr.apellido
           }
                         )
