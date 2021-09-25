@@ -25,6 +25,8 @@ from djangoProject.academico.views import login
 from djangoProject.academico.views import logout
 from djangoProject.academico.views import perfil
 from djangoProject.academico.views import notas_estudiante
+from django.conf import settings
+from django.conf.urls.static import static
 
 from djangoProject.academico.views import export_pdf,promtpdf
 urlpatterns = [
@@ -46,4 +48,4 @@ urlpatterns = [
     path('thank/',thank),
     #path('export/', export_pdf, name="export")
     #path('login/',login,{'template_name':'login.html'}, name='login'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
